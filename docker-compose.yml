@@ -1,0 +1,53 @@
+version: "3"
+services:
+
+  test-hmz-db:
+    container_name: booking_db
+    platform: linux/amd64 #for platform error on Apple M1 chips
+    restart: unless-stopped
+    env_file: .env
+    image: postgres:12.0-alpine
+    environment:
+      POSTGRES_USER: ${DATABASE_USERNAME}
+      POSTGRES_PASSWORD: ${DATABASE_PASSWORD}
+      POSTGRES_DB: ${DATABASE_NAME}
+    volumes:
+      - test-hmz-data:/var/lib/postgresql/data/ #using a volume
+      #- ./data:/var/lib/postgresql/data/ # if you want to use a bind folder
+
+    ports:
+      - "5432:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${DATABASE_USERNAME} -d ${DATABASE_NAME}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - test-hmz
+
+  test-hmz-app:
+    container_name: test-hmz-app
+    build:
+      context: .
+      dockerfile: Dockerfile
+    restart: unless-stopped
+    env_file: .env
+    environment:
+      DATABASE_URL: postgres://${DATABASE_USERNAME}:${DATABASE_PASSWORD}@localhost:5432/${DATABASE_NAME}
+      REDIS_URL: redis://test-hmz-redis:6379
+      SECRET_KEY: ${SECRET_KEY}
+      PORT: ${PORT}
+    ports:
+      - "3000:3000"
+    depends_on:
+      - test-hmz-db
+    networks:
+      - test-hmz
+
+volumes:
+  test-hmz-data:
+
+networks:
+  test-hmz:
+    name: test-hmz
+    driver: bridge
