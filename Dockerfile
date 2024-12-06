@@ -6,6 +6,8 @@ WORKDIR /app
 
 # Copia os arquivos package.json e package-lock.json para instalar dependências
 COPY package.json yarn.lock ./
+COPY tsconfig.json ./
+COPY src ./src
 
 # Instala as dependências
 RUN npm install
@@ -14,8 +16,6 @@ RUN npm install
 COPY . .
 
 RUN npm run build
-
-RUN npm run prisma:generate
 
 # RUN npm run prisma:migrate
 
