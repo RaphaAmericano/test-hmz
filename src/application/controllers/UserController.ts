@@ -21,7 +21,7 @@ export class UserController {
         HttpResponse.success(res, { ...user_data, ...auth } )
     }
 
-    async update_user(req: Request, res: Response) {
+    async update_user(req: Request<UserId, {}, {}>, res: Response) {
         res.status(200).json({'login': 'login'});
     }
 

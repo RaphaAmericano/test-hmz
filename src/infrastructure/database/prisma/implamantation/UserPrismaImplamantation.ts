@@ -9,16 +9,22 @@ export class UserPrismaImplamantation {
       where: {
         id
       },
-      include:{
+      select:{
+        id: true,
+        first_name: true,
+        last_name: true,
+        avatar: true,
         auth:{
           select:{
             email: true,
             username: true
           }
         }
-      }
+      },
     });
     return result;
   }
+
+  
 
 }

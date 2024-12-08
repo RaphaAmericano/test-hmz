@@ -19,7 +19,7 @@ model User {
   last_name  String?
   avatar     String?
   created_at DateTime @default(now())
-  updated_at DateTime @default(now())
+  updated_at DateTime @default(now()) @updatedAt
   auth       Auth?
 }
 
@@ -29,7 +29,7 @@ model Auth {
   email      String   @unique
   username   String   @unique
   created_at DateTime @default(now())
-  updated_at DateTime @default(now())
+  updated_at DateTime @default(now()) @updatedAt
   user       User?     @relation(fields: [user_id], references: [id])
   user_id    String?   @unique
 }
