@@ -1,12 +1,24 @@
-import { PrismaCreateAuthDto } from "../interfaces/Auth";
+import { PrismaFindUserByIdResultDto } from "../interfaces/User";
 import { prisma } from "../prisma";
-const { auth } = prisma;
+const { user } = prisma;
 
 export class UserPrismaImplamantation {
-  static async create(data: PrismaCreateAuthDto) {
-    const result = await auth.create({
-      data,
+
+  static async find_by_id(id: string): Promise<PrismaFindUserByIdResultDto | null> {
+    const result = await user.findUnique({
+      where: {
+        id
+      },
+      include:{
+        auth:{
+          select:{
+            email: true,
+            username: true
+          }
+        }
+      }
     });
     return result;
   }
+
 }
