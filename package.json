@@ -8,11 +8,16 @@
     "build": "tsc",
     "test": "jest",
     "test:watch": "jest --watchAll --verbose",
-    "dev": "nodemon --watch 'src/' --exec 'ts-node src/index.ts' -e ts"
+    "dev": "nodemon --watch 'src/' --exec 'ts-node src/index.ts' -e ts",
+    "prisma:migrate:dev": "npx prisma migrate dev",
+    "prisma:bb:push": "npx prisma db push"
   },
   "dependencies": {
+    "@prisma/client": "^6.0.1",
     "dotenv": "^16.4.7",
-    "express": "^4.21.2"
+    "express": "^4.21.2",
+    "prisma": "^6.0.1",
+    "tsx": "^4.19.2"
   },
   "devDependencies": {
     "@types/express": "^5.0.0",
