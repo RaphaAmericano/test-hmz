@@ -21,4 +21,25 @@ export class AuthPrismaImplamantation {
 
     return result as AuthCreateSuccessDto;
   }
+
+  static async find_by_email(email: string): Promise<any> {
+    const result = await auth.findUnique({
+      where: {
+        email,
+      },
+    });
+
+    return result;
+  }
+
+  static async find_by_username(username: string): Promise<any> {
+    const result = await auth.findUnique({
+      where: {
+        username,
+      },
+    });
+
+    return result;
+  }
+
 }

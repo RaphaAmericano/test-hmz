@@ -9,7 +9,15 @@ export class BearerTokenMiddleware {
         res: Response<AuthId | null>): any {
         const { id } = req.user as AuthId 
         const token = this.tokenGenerateFunction({ id })
-        return HttpResponse.success(res, { id,  token });
-             
+        return HttpResponse.success(res, { id,  token }); 
+    }
+
+    public successWithOnlyBearer(
+        req: Request<{}, {}, {}, { }>, 
+        res: Response<AuthId | null>): any {
+        const { id } = req.user as AuthId 
+        const token = this.tokenGenerateFunction({ id })
+        return HttpResponse.success(res, { token }); 
     }
 }
+
