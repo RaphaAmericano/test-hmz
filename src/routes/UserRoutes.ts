@@ -10,7 +10,8 @@ import { UserService } from "../application/services/UserService"
 const router = Router()
 
 const userRepository = new UserRepositoryImpl({
-    findByIdFunction: UserPrismaImplamantation.find_by_id
+    findByIdFunction: UserPrismaImplamantation.find_by_id,
+    updateFunction: UserPrismaImplamantation.update
 })
 
 const userService = new UserService(userRepository)

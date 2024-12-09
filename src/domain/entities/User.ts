@@ -14,7 +14,7 @@ export interface User extends UserId {
 }
 
 export interface UserFindByIdDto extends Omit<User, "auth" | "created_at" | "updated_at"> {
-    auth?: Pick<Auth, "username" | "email"> 
+    auth?: Pick<Auth, "username" | "email"> | null 
 }
 
 export interface UserFindResultDto extends Omit<User, "auth"> {

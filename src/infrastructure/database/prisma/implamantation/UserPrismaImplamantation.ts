@@ -21,10 +21,20 @@ export class UserPrismaImplamantation {
           }
         }
       },
-    });
+
+    }
+  );
+
     return result;
   }
 
-  
-
+  static async update(id: string, payload: any): Promise<any | null> {
+    const result = await user.update({
+      where: {
+        id
+      },
+      data: payload
+    });
+    return result;
+  }
 }

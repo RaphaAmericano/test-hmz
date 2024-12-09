@@ -4,8 +4,10 @@ import { UserRepository, UserRepositoryProps } from "../../../domain/interfaces/
 
 export class UserRepositoryImpl implements UserRepository { 
     private readonly findByIdFunction: (id: string) => Promise<UserFindByIdDto | null>;
+    private readonly updateFunction:(id:string, payload:any ) => Promise<any | null>;
     constructor(props: UserRepositoryProps) {
         this.findByIdFunction = props.findByIdFunction;
+        this.updateFunction = props.updateFunction;
     }
 
     async find_by_id(id: string): Promise<UserFindByIdDto | null> {
@@ -13,7 +15,7 @@ export class UserRepositoryImpl implements UserRepository {
     }
 
     async update(id: string, payload: any): Promise<any | null> {
-        
+        return await this.updateFunction(id, payload);
     }
 
 }
