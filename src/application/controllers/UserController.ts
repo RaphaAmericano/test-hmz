@@ -32,7 +32,12 @@ export class UserController {
         HttpResponse.success(res, data)
     }
 
-    async delete_user(req: Request, res: Response) {
-        res.status(200).json({'login': 'login'});
+    async delete_user(req: Request<UserId, {}, {}>, res: Response) {
+        const { id } = req.params
+        const { data, error } = await PromiseHandle.wrapPromise<any>(this.userService.delete(id))
+        if(error || data === null){
+            HttpResponse.error(res, error.message || 'Error to edit user')
+        }
+        HttpResponse.success(res, data)
     }
 }

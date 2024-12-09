@@ -1,4 +1,4 @@
-import { UserFindByIdDto, UserUpdateResultDto } from "../../domain/entities/User";
+import { UserDeleteResultDto, UserFindByIdDto, UserUpdateResultDto } from "../../domain/entities/User";
 import { UserRepository } from "../../domain/interfaces/UserRepository";
 
 export class UserService {
@@ -11,4 +11,9 @@ export class UserService {
     public async update(id:string, payload:any): Promise<UserUpdateResultDto | null> {
         return await this.userRepository.update(id, payload);
     }
+
+    public async delete(id:string): Promise<UserDeleteResultDto | null> {
+        return await this.userRepository.delete(id);
+    }
+
 }

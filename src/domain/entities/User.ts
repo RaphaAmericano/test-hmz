@@ -30,6 +30,8 @@ export interface UserUpdateDto {
 
 export interface UserUpdateResultDto extends User {
     auth?: Auth
-    // email: string;
-    // username: string;
+}
+
+export interface UserDeleteResultDto extends User {
+    auth?: Auth
 }

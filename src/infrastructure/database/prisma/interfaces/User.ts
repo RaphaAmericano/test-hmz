@@ -23,3 +23,7 @@ export interface PrismaUpdateUserDto extends Prisma.UserUpdateInput {}
 export interface PrismaUpdateUserResultDto extends User {
   auth?: Auth;
 }
+
+export interface PrismaDeleteUserResultDto extends User {
+  auth?: Auth;
+}

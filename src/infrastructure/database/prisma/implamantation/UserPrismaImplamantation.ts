@@ -1,4 +1,4 @@
-import { PrismaFindUserByIdResultDto, PrismaUpdateUserDto, PrismaUpdateUserResultDto } from "../interfaces/User";
+import { PrismaDeleteUserResultDto, PrismaFindUserByIdResultDto, PrismaUpdateUserDto, PrismaUpdateUserResultDto } from "../interfaces/User";
 import { prisma } from "../prisma";
 const { user } = prisma;
 
@@ -37,4 +37,14 @@ export class UserPrismaImplamantation {
     });
     return result;
   }
+
+  static async delete(id: string): Promise<PrismaDeleteUserResultDto | null > {
+    const result = await user.delete({
+      where: {
+        id
+      }
+    });
+    return result 
+  }
+
 }
