@@ -1,6 +1,6 @@
 import { NextFunction, Request, Response } from "express";
 import { UserService } from "../services/UserService";
-import { UserFindResultDto, UserId } from "../../domain/entities/User";
+import { UserFindResultDto, UserId, UserUpdateResultDto } from "../../domain/entities/User";
 import { PromiseHandle } from "../../shared/utils/PromiseHandle";
 import { HttpResponse } from "../../infrastructure/utils/HttpResponse";
 
@@ -25,7 +25,7 @@ export class UserController {
 
     async update_user(req: Request<UserId, {}, {}>, res: Response) {
         const { id } = req.params
-        const { data, error } = await PromiseHandle.wrapPromise<UserFindResultDto>(this.userService.update(id, req.body )) 
+        const { data, error } = await PromiseHandle.wrapPromise<UserUpdateResultDto>(this.userService.update(id, req.body )) 
         if(error || data === null){
             HttpResponse.error(res, error.message || 'Error to edit user')
         }

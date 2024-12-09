@@ -1,4 +1,4 @@
-import { PrismaFindUserByIdResultDto } from "../interfaces/User";
+import { PrismaFindUserByIdResultDto, PrismaUpdateUserDto, PrismaUpdateUserResultDto } from "../interfaces/User";
 import { prisma } from "../prisma";
 const { user } = prisma;
 
@@ -28,7 +28,7 @@ export class UserPrismaImplamantation {
     return result;
   }
 
-  static async update(id: string, payload: any): Promise<any | null> {
+  static async update(id: string, payload: PrismaUpdateUserDto): Promise<PrismaUpdateUserResultDto | null> {
     const result = await user.update({
       where: {
         id
