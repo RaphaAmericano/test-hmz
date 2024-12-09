@@ -1,3 +1,4 @@
+import { UserFindAllResultDto } from "../../../../domain/entities/User";
 import { PrismaDeleteUserResultDto, PrismaFindUserByIdResultDto, PrismaUpdateUserDto, PrismaUpdateUserResultDto } from "../interfaces/User";
 import { prisma } from "../prisma";
 const { user } = prisma;
@@ -28,8 +29,8 @@ export class UserPrismaImplamantation {
     return result;
   }
 
-  static async find_all(take?: number, skip?: number ): Promise<any | null> {
-    const result = await user.findMany({
+  static async find_all(take?: number, skip?: number ): Promise<{ result:PrismaFindUserByIdResultDto[], count: number } | null> {
+    const result:  PrismaFindUserByIdResultDto[] = await user.findMany({
       take,
       skip,
       select:{
@@ -45,9 +46,8 @@ export class UserPrismaImplamantation {
         }
       }
     });
-
     const count = await user.count();
-    return { result , count};
+    return { result , count };
   }
 
 

@@ -10,7 +10,7 @@ export interface User extends UserId {
     avatar?: string | null;
     created_at?: Date | string;
     updated_at?: Date | string ;
-    auth?: Auth;
+    auth?: Auth | null ;
 }
 
 export interface UserGetUserQuerysDto {
@@ -22,7 +22,9 @@ export interface UserFindByIdDto extends Omit<User, "auth" | "created_at" | "upd
     auth?: Pick<Auth, "username" | "email"> | null 
 }
 
-export interface UserFindResultDto extends User {}
+export interface UserFindResultDto extends Omit<User, "auth"> {
+    auth?: { email: string, username: string } | null
+}
 
 export interface UserUpdateDto {
     first_name?: string;
@@ -36,4 +38,9 @@ export interface UserUpdateResultDto extends User {
 
 export interface UserDeleteResultDto extends User {
     auth?: Auth
+}
+
+export interface UserFindAllResultDto {
+    result:  UserFindResultDto[];
+    count: number;
 }

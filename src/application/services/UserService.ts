@@ -1,4 +1,4 @@
-import { UserDeleteResultDto, UserFindByIdDto, UserUpdateResultDto } from "../../domain/entities/User";
+import { UserDeleteResultDto, UserFindAllResultDto, UserFindByIdDto, UserUpdateResultDto } from "../../domain/entities/User";
 import { UserRepository } from "../../domain/interfaces/UserRepository";
 
 export class UserService {
@@ -8,7 +8,7 @@ export class UserService {
         return await this.userRepository.find_by_id(id);
     }
 
-    public async find_all(page?: number, per_page?: number): Promise<any | null> {
+    public async find_all(page?: number, per_page?: number): Promise<UserFindAllResultDto | null> {
         return await this.userRepository.find_all(page, per_page);
     }
 
