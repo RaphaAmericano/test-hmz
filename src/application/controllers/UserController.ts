@@ -1,14 +1,21 @@
 import { NextFunction, Request, Response } from "express";
 import { UserService } from "../services/UserService";
-import { UserFindResultDto, UserId, UserUpdateResultDto } from "../../domain/entities/User";
+import { UserFindResultDto, UserGetUserQuerysDto, UserId, UserUpdateResultDto } from "../../domain/entities/User";
 import { PromiseHandle } from "../../shared/utils/PromiseHandle";
 import { HttpResponse } from "../../infrastructure/utils/HttpResponse";
 
 export class UserController {
     constructor(private readonly userService: UserService) {}
 
-    async get_users(req: Request, res: Response) {
-        res.status(200).json({'login': 'login'});
+    async get_users(req: Request<{}, {}, {}, UserGetUserQuerysDto>, res: Response) {
+        const { page = 0, per_page = 10} = req.query
+        const { data, error } = await PromiseHandle.wrapPromise<[]>(this.userService.find_all(page, per_page))
+        if(error || data === null){
+            HttpResponse.error(res, error?.message || 'Error to get user')
+        }
+        const { result, count:total } = data
+        const total_pages = Math.ceil(total / per_page)
+        res.status(200).json({ page, per_page, total, total_pages, data:result });
     }
 
     async get_user_by_id(req: Request<UserId, {}, {}>, res: Response, next: NextFunction) {
@@ -16,7 +23,7 @@ export class UserController {
         const { data, error } = await PromiseHandle.wrapPromise<UserFindResultDto>(this.userService.find_by_id(id))
 
         if(error || data === null){
-            HttpResponse.error(res, error.message || 'Error to get user')
+            HttpResponse.error(res, error?.message || 'Error to get user')
         }
 
         const { auth, ...user_data } = data

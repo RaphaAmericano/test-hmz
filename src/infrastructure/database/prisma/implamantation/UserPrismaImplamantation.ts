@@ -28,6 +28,29 @@ export class UserPrismaImplamantation {
     return result;
   }
 
+  static async find_all(take?: number, skip?: number ): Promise<any | null> {
+    const result = await user.findMany({
+      take,
+      skip,
+      select:{
+        id: true,
+        first_name: true,
+        last_name: true,
+        avatar: true,
+        auth:{
+          select:{
+            email: true,
+            username: true
+          }
+        }
+      }
+    });
+
+    const count = await user.count();
+    return { result , count};
+  }
+
+
   static async update(id: string, payload: PrismaUpdateUserDto): Promise<PrismaUpdateUserResultDto | null> {
     const result = await user.update({
       where: {

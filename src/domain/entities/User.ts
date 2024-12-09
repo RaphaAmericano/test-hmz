@@ -13,14 +13,16 @@ export interface User extends UserId {
     auth?: Auth;
 }
 
+export interface UserGetUserQuerysDto {
+    page?: number;
+    per_page?: number;
+}
+
 export interface UserFindByIdDto extends Omit<User, "auth" | "created_at" | "updated_at"> {
     auth?: Pick<Auth, "username" | "email"> | null 
 }
 
-export interface UserFindResultDto extends User {
-    // email: string;
-    // username: string;
-}
+export interface UserFindResultDto extends User {}
 
 export interface UserUpdateDto {
     first_name?: string;

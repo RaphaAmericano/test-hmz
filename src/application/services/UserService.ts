@@ -8,6 +8,10 @@ export class UserService {
         return await this.userRepository.find_by_id(id);
     }
 
+    public async find_all(page?: number, per_page?: number): Promise<any | null> {
+        return await this.userRepository.find_all(page, per_page);
+    }
+
     public async update(id:string, payload:any): Promise<UserUpdateResultDto | null> {
         return await this.userRepository.update(id, payload);
     }

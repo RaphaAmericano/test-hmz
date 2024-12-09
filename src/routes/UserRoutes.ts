@@ -11,6 +11,7 @@ const router = Router()
 
 const userRepository = new UserRepositoryImpl({
     findByIdFunction: UserPrismaImplamantation.find_by_id,
+    findAllFunction: UserPrismaImplamantation.find_all,
     updateFunction: UserPrismaImplamantation.update,
     deleteFunction: UserPrismaImplamantation.delete
 })
