@@ -47,7 +47,7 @@ export class UserController {
         const { id } = req.params
         const { data, error } = await PromiseHandle.wrapPromise<any>(this.userService.delete(id))
         if(error || data === null){
-            HttpResponse.error(res, error.message || 'Error to edit user')
+            HttpResponse.error(res, 'Error to delete user')
             return 
         }
         HttpResponse.success(res, data)

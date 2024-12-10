@@ -64,10 +64,8 @@ export class UserZod {
   }
 
 
-  static validate_user_find_one(params: any): ValidationResult {
-    console.log(params)
-    const result = userGetParamSchema.safeParse(params);
-    console.log(result)
+  static validate_user_param(params: any): ValidationResult {
+    const result = userGetParamSchema.safeParse(params);    
     const data = result.data ?? params
     const error = result.success ? null : ZodUtils.formatErrorString(result.error);
     return { success: result.success, error: error || null, data  };
