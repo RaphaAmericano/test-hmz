@@ -17,19 +17,15 @@ const userRepository = new UserRepositoryImpl({
     updateFunction: UserPrismaImplamantation.update,
     deleteFunction: UserPrismaImplamantation.delete
 })
-
 const userService = new UserService(userRepository)
-
+const userController = new UserController(userService)
 const requestValidationMiddleware = new UserRequestValidationMiddleware({
     validateUserFindAllFunction: UserZod.validate_user_find_all,
     validateUserParamFunction: UserZod.validate_user_param,
     validateUserUpdateFunction: UserZod.validate_user_update
 })
-
 const authMiddleware = new AuthMiddleware('local')
 const bearerTokenMiddleware = new BearerTokenMiddleware(TokenManager.generateToken)
-
-const userController = new UserController(userService)
 
 router.get("", requestValidationMiddleware.validate_users_find_all.bind(requestValidationMiddleware),  userController.get_users.bind(userController))
 router.get("/:id",requestValidationMiddleware.validate_users_find_one.bind(requestValidationMiddleware), userController.get_user_by_id.bind(userController))

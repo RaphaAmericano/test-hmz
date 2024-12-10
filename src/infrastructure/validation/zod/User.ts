@@ -1,5 +1,4 @@
-import { z, ZodType } from "zod";
-import { User } from "../../../domain/entities/User";
+import { z } from "zod";
 import { ValidationResult } from "../interfaces/Validation";
 import { ZodUtils } from "../../utils/ZodUtils";
 

@@ -11,7 +11,7 @@ export class AuthController {
     }
 
     public async logout(req: Request, res: Response) {
-        res.send('logout');
+        res.status(200).json()
     }
 
     public async register(
