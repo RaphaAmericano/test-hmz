@@ -8,7 +8,7 @@ export class UserController {
     constructor(private readonly userService: UserService) {}
 
     async get_users(req: Request<{}, {}, {}, UserGetUserQuerysDto>, res: Response) {
-        const { page = 0, per_page = 10} = req.query
+        const { page = 1, per_page = 10} = req.query
         const { data, error } = await PromiseHandle.wrapPromise<UserFindAllResultDto | null>(this.userService.find_all(page, per_page))
         if(error || data === null){
             HttpResponse.error(res, error?.message || 'Error to get user')
