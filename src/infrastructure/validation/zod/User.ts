@@ -18,6 +18,17 @@ const userSchema = z.object({
     .optional(),
 });
 
+const userGetAllQuerySchema = z.object({
+  page: z.preprocess(
+    (val) => (typeof val === 'string' ? parseInt(val, 10) : val ), 
+    z.number().optional()
+  ),
+  per_page: z.preprocess(
+    (val) => (typeof val === 'string' ? parseInt(val, 10) : val ), 
+    z.number().optional()
+  ).optional(),
+});
+
 type UserInferUser = z.infer<typeof userSchema>;
 
 const userSchemaUpdate = userSchema
@@ -31,10 +42,19 @@ const userSchemaUpdate = userSchema
   );
 
 export class UserZod {
+  static validate_user_find_all(query: any): ValidationResult {
+    const result = userGetAllQuerySchema.safeParse(query);
+    const data = result.data ?? query
+    const error = result.success ? null : ZodUtils.formatErrorString(result.error);
+    return { success: result.success, error: error || null, data  };
+  }
+
   static validate_user_update(body: any): ValidationResult {
     const result = userSchemaUpdate.safeParse(body);
     const data = result.data ?? body
     const error = result.success ? null : ZodUtils.formatErrorString(result.error);
     return { success: result.success, error: error || null, data  };
   }
+
+  
 }

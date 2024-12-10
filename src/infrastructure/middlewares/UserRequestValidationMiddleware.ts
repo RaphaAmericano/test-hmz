@@ -1,18 +1,32 @@
 import { NextFunction, Request, Response } from "express";
-import { UserId } from "../../domain/entities/User";
+import { UserGetUserQuerysDto, UserId } from "../../domain/entities/User";
 import { HttpResponse } from "../utils/HttpResponse";
 import { ValidationResult } from "../validation/interfaces/Validation";
 
 interface UserRequestValidationMiddlewareProps{
+    validateUserFindAllFunction: (query: UserGetUserQuerysDto) => ValidationResult,
     validateUserUpdateFunction: (body: any) => ValidationResult
 }
 
 export class UserRequestValidationMiddleware {
 
+    private validateUserFindAllFunction: (query: UserGetUserQuerysDto) => ValidationResult
     private validateUserUpdateFunction: (body: any) => ValidationResult
-
     constructor(props: UserRequestValidationMiddlewareProps) { 
+        this.validateUserFindAllFunction = props.validateUserFindAllFunction
         this.validateUserUpdateFunction = props.validateUserUpdateFunction
+    }
+
+    public validate_users_find_all(req: Request, res: Response, next: NextFunction): void {
+        const { query } = req
+        const validate = this.validateUserFindAllFunction(query)
+        if(!validate.success) {
+            const error = typeof validate.error === "string" ? validate.error : "Invalid request payload"
+            HttpResponse.error(res, error, 400)
+            return
+        }
+        req.query = validate.data ?? query
+        next();
     }
 
     public validate_user_update(req: Request<UserId>, res: Response, next: NextFunction): void {
