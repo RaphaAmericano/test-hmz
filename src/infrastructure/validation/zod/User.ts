@@ -1,7 +1,7 @@
 import { z, ZodType } from "zod";
 import { User } from "../../../domain/entities/User";
 import { ValidationResult } from "../interfaces/Validation";
-import { ZodUtils } from "./Utils";
+import { ZodUtils } from "../../utils/ZodUtils";
 
 const userSchema = z.object({
   id: z.string().uuid(),
@@ -29,6 +29,11 @@ const userGetAllQuerySchema = z.object({
   ).optional(),
 });
 
+
+const userGetParamSchema = z.object({
+  id: z.string().uuid(),
+});
+
 type UserInferUser = z.infer<typeof userSchema>;
 
 const userSchemaUpdate = userSchema
@@ -41,6 +46,8 @@ const userSchemaUpdate = userSchema
     }
   );
 
+
+
 export class UserZod {
   static validate_user_find_all(query: any): ValidationResult {
     const result = userGetAllQuerySchema.safeParse(query);
@@ -52,6 +59,16 @@ export class UserZod {
   static validate_user_update(body: any): ValidationResult {
     const result = userSchemaUpdate.safeParse(body);
     const data = result.data ?? body
+    const error = result.success ? null : ZodUtils.formatErrorString(result.error);
+    return { success: result.success, error: error || null, data  };
+  }
+
+
+  static validate_user_find_one(params: any): ValidationResult {
+    console.log(params)
+    const result = userGetParamSchema.safeParse(params);
+    console.log(result)
+    const data = result.data ?? params
     const error = result.success ? null : ZodUtils.formatErrorString(result.error);
     return { success: result.success, error: error || null, data  };
   }

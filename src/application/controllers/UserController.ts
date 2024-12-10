@@ -25,11 +25,10 @@ export class UserController {
     async get_user_by_id(req: Request<UserId, {}, {}>, res: Response, next: NextFunction) {
         const { id } = req.params
         const { data, error } = await PromiseHandle.wrapPromise<UserFindResultDto>(this.userService.find_by_id(id))
-
         if(error || data === null){
             HttpResponse.error(res, error?.message || 'Error to get user')
+            return 
         }
-
         const { auth, ...user_data } = data
         HttpResponse.success(res, { ...user_data, ...auth } )
     }
@@ -39,6 +38,7 @@ export class UserController {
         const { data, error } = await PromiseHandle.wrapPromise<UserUpdateResultDto>(this.userService.update(id, req.body )) 
         if(error || data === null){
             HttpResponse.error(res, error.message || 'Error to edit user')
+            return 
         }
         HttpResponse.success(res, data)
     }
@@ -48,6 +48,7 @@ export class UserController {
         const { data, error } = await PromiseHandle.wrapPromise<any>(this.userService.delete(id))
         if(error || data === null){
             HttpResponse.error(res, error.message || 'Error to edit user')
+            return 
         }
         HttpResponse.success(res, data)
     }
