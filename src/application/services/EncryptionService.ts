@@ -8,7 +8,7 @@ export class EncryptionService
         return await bcrypt.hash(password, this.saltRounds);
     }
 
-    async comparePassword(password: string, hash: string): Promise<boolean> {
+    static async comparePassword(password: string, hash: string): Promise<boolean> {
         return await bcrypt.compare(password, hash);
     }
 

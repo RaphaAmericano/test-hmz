@@ -1,6 +1,6 @@
 import { PromiseHandle } from "../../shared/utils/PromiseHandle";
 import { Strategy as LocalStrategy } from "passport-local";
-import { AuthUtils } from "../utils/AuthUtils";
+import { EncryptionService } from "../../application/services/EncryptionService";
 export class LocalStrategyService {
   constructor(private readonly findUserFunction: (value: string) => any) {}
   public getStategy(): any {
@@ -10,8 +10,7 @@ export class LocalStrategyService {
         const { data, error } = await PromiseHandle.wrapPromise<any>(
           this.findUserFunction(username)
         );
-        // Validar o password
-        if (!data || !AuthUtils.validatePassword(data.password, password) ||  error) {
+        if (!data || !EncryptionService.comparePassword(data.password, password) ||  error) {
           return done(null, false, { message: "Email ou senha incorretos" });
         }
         return done(null, data);
