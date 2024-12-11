@@ -8,12 +8,15 @@ import { TokenManager } from "../infrastructure/utils/TokenManager"
 import { AuthMiddleware } from "../infrastructure/middlewares/AuthMiddleware"
 import { AuthRequestValidationMiddleware } from "../infrastructure/middlewares/AuthRequestValidationMiddleware"
 import { AuthZod } from "../infrastructure/validation/zod/Auth"
+import { EncryptionService } from "../application/services/EncryptionService"
 const router = Router()
 
+const encyiptionService = new EncryptionService()
 const authRepository = new AuthRepositoryImpl({
     createFunction: AuthPrismaImplamantation.create
 }) 
-const authService = new AuthService(authRepository)
+
+const authService = new AuthService(authRepository, encyiptionService)
 const authController = new AuthController(authService)
 const requestValidationMiddleware = new AuthRequestValidationMiddleware({
     validateAuthLoginFunction: AuthZod.validate_login,
