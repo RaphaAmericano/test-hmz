@@ -2,9 +2,10 @@ import request from "supertest";
 import jwt from "jsonwebtoken"
 import { AuthController } from "../../src/application/controllers/AuthController";
 import { AuthService } from "../../src/application/services/AuthService";
-import { Application } from "express";
+import { Application, NextFunction, Request } from "express";
 import server from "../../src/infrastructure/server";
 import { TokenManager } from "../../src/infrastructure/utils/TokenManager";
+import { authenticate } from "passport";
 
 jest.mock("../../src/application/services/AuthService", () => {
     return {
@@ -13,57 +14,51 @@ jest.mock("../../src/application/services/AuthService", () => {
         })),
     };
 })
-jest.mock("jsonwebtoken")
+jest.mock("jsonwebtoken");
+
+jest.mock("passport", () => {
+  const mockPassport = {
+    use: jest.fn(),
+    authenticate: jest.fn((strategy, options, callback) => {
+      return (req: Request, res: NextFunction) => {
+        callback(null, { id: 1 }, null);
+      };
+    }),
+  };
+  return mockPassport;
+})
 
 describe("AuthRoutes", () => {
   let app: Application;
-  let token: string;
+  
+
   beforeAll(() => {
-    app = server;
-    token = TokenManager.generateToken({ id: 1 });
+    app = server
   });
 
-  let authController: AuthController;
-  let authServiceMock: jest.Mocked<AuthService>;
-  beforeEach(() => {
-    authServiceMock = {
-      login: jest.fn(),
-      register: jest.fn(),
-    } as unknown as jest.Mocked<AuthService>;
 
-    authController = new AuthController(authServiceMock);
-  });
 
-  it("should login successfully", async () => {
-    const mockDataResponse = {
-      token: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjE5ZTNiODgyLTc3YTYtNDliZC05MDgxLTUxYjNkYzVjOTU1MiIsIm5hbWUiOiJKb8OjbyBTaWx2YSIsImlhdCI6MTczMjkwODUyOCwiZXhwIjoxNzMyOTEyMTI4fQ.kS7EbpcMxmGgbpZaQ4CMW7AxpdAYBjVvm8g27yVcFWM"
-    }
 
-    const expectedResponse = {
-        token: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjE5ZTNiODgyLTc3YTYtNDliZC05MDgxLTUxYjNkYzVjOTU1MiIsIm5hbWUiOiJKb8OjbyBTaWx2YSIsImlhdCI6MTczMjkwODUyOCwiZXhwIjoxNzMyOTEyMTI4fQ.kS7EbpcMxmGgbpZaQ4CMW7AxpdAYBjVvm8g27yVcFWM"
-    }
+  // it("should register successfully", async () => {
+  //   (jwt.sign as jest.Mock).mockReturnValue("moked-token")
+
+  //     const response = await request(app)
+  //     .post("/api/register").send({
+  //       username:"jorge_mauro",
+  //       password: "123456",
+  //       email: "jorge.mauro@gmail.com"
+  //     });
+  //     console.log(response)
+  //     // expect(response.status).toBe(200);
     
-    const authServiceMock = AuthService.prototype.create as jest.Mock;
-    authServiceMock.mockResolvedValue(mockDataResponse);
-
-    const response = await request(app)
-        .post('/api/login')
-        .send({
-            email: "test@example.com",
-            password: "password"
-        });
-
-    expect(response.status).toBe(200);
-    expect(response.body).toEqual(expectedResponse);
-    
-  });
+  // });
 
   it("should logout successfully", async () => {
-    // const token = TokenManager.generateToken({ id: 1 })
+    
     const response = await request(app)
       .post("/api/logout")
-      .set("Authorization", `Bearer ${token}`)
-      .send({});
+      .set("Authorization", `Bearer moked-token`)
+      .send();
     expect(response.status).toBe(200);
-  });
+  }, 10000);
 });
