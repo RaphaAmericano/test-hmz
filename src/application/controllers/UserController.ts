@@ -15,10 +15,10 @@ export class UserController {
         }
         const { result, count:total } = data
         const total_pages = Math.ceil(total / per_page)
-        const mapResult = result.map((user:UserFindResultDto) => {
+        const mapResult = Array.isArray(result) ? result.map((user:UserFindResultDto) => {
             const { auth,  ...user_data } = user
             return { ...user_data, username: auth?.username, email: auth?.email }
-        })
+        }) : []
         res.status(200).json({ page, per_page, total, total_pages, data:mapResult });
     }
 

@@ -24,7 +24,7 @@ const requestValidationMiddleware = new UserRequestValidationMiddleware({
     validateUserParamFunction: UserZod.validate_user_param,
     validateUserUpdateFunction: UserZod.validate_user_update
 })
-const authMiddleware = new AuthMiddleware('local')
+const authMiddleware = new AuthMiddleware('jwt')
 const bearerTokenMiddleware = new BearerTokenMiddleware(TokenManager.generateToken)
 
 router.get("", requestValidationMiddleware.validate_users_find_all.bind(requestValidationMiddleware), authMiddleware.authenticate(),   userController.get_users.bind(userController))

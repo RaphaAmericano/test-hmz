@@ -21,7 +21,6 @@ export interface UserGetUserQuerysDto {
 export interface UserFindByIdDto extends Omit<User, "auth" | "created_at" | "updated_at"> {
     auth?: Pick<Auth, "username" | "email"> | null 
 }
-
 export interface UserFindResultDto extends Omit<User, "auth"> {
     auth?: { email: string, username: string } | null
 }
