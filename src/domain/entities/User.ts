@@ -18,6 +18,24 @@ export interface UserGetUserQuerysDto {
     per_page?: number;
 }
 
+export interface UserCreateDto extends Pick<User,  "first_name" | "last_name" | "avatar"> { 
+    email: string
+}
+
+// Interface representando o usuário criado
+export interface UserCreateResultDto extends Pick<User, "id" > {
+    id: string;
+    first_name: string | null;
+    last_name: string | null;
+    avatar: string | null;
+    created_at: Date | string;
+    updated_at: Date | string;
+    auth?: {
+      email: string;
+    } | null;
+  }
+  
+
 export interface UserFindByIdDto extends Omit<User, "auth" | "created_at" | "updated_at"> {
     auth?: Pick<Auth, "username" | "email"> | null 
 }

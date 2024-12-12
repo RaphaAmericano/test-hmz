@@ -27,5 +27,3 @@ export interface PrismaUpdateUserResultDto extends User {
 export interface PrismaDeleteUserResultDto extends User {
   auth?: Auth;
 }
-
-// UserFindAllResultDto

@@ -39,18 +39,17 @@ Após configurar as varíaveis de ambiente execute a sequencia de comandos
   npm run start
 ```
     
-### Utilizando o Docker
-
-```bash
-  docker-compose up --build
-```
 ### Users
 
 #### Retorna todos os usuários
 
 ```http
-  GET /api/users
+  GET /api/users?page=2&per_page=4
 ```
+### Parâmetros de Consulta
+
+- `page` (opcional): Busca o número da página.
+- `per_page` (opcional): Quantidade de retornos por página.
 
 #### Retorna um user
 
@@ -62,15 +61,55 @@ Após configurar as varíaveis de ambiente execute a sequencia de comandos
 | :---------- | :--------- | :------------------------------------------ |
 | `id`      | `string` | **Obrigatório**. O ID do usuario que você quer |
 
-#### Edita um user
+
+
+#### Criar um user
+
+```http
+  POST /api/users
+```
+| Propriedade   | Tipo       | Descrição                                   |
+| :---------- | :--------- | :------------------------------------------ |
+| `first_name`      | `string` | **Obrigatório**. Primeiro nome do usuário|
+| `last_name`      | `string` | **Obrigatório**. Último nome do usuário|
+| `avatar`      | `string` | **Obrigatório**. Avatar do usuário|
+| `email`      | `string` | **Obrigatório**. Email do usuário|
+
+```
+{
+    "first_name": string,
+    "last_name": string,
+    "avatar: string,
+    "email": string
+}
+```
+
+#### Editar um user
 
 ```http
   PUT /api/users/${id}
 ```
 
+
 | Parâmetro   | Tipo       | Descrição                                   |
 | :---------- | :--------- | :------------------------------------------ |
-| `id`      | `string` | **Obrigatório**. O ID do usuario que você quer |
+| `id`      | `string` | **Obrigatório**. O ID do usuario que você quer editar|
+
+| Propriedade   | Tipo       | Descrição                                   |
+| :---------- | :--------- | :------------------------------------------ |
+| `first_name`      | `string` | **Opcional**. Primeiro nome do usuário|
+| `last_name`      | `string` | **Opcional**. Último nome do usuário|
+| `avatar`      | `string` | **Opcional**. Avatar do usuário|
+
+```json
+{
+    "first_name": string, 
+    "last_name": string, 
+    "avatar: string 
+}
+```
+
+#### Excluir um user
 
 ```http
   DELETE /api/users/${id}
@@ -83,17 +122,25 @@ Após configurar as varíaveis de ambiente execute a sequencia de comandos
 
 ### Auth
 
-#### Executa o cadastro do usuário
+#### Executa o cadastro do usuário administrador
 
 ```http
   POST /api/register
 ```
 
-| Parâmetro   | Tipo       | Descrição                                   |
+| Propriedade   | Tipo       | Descrição                                   |
 | :---------- | :--------- | :------------------------------------------ |
 | `username`      | `string` | **Obrigatório**. O nome de usuário |
 | `email`      | `string` | **Obrigatório**. O email de usuário |
 | `password`      | `string` | **Obrigatório**. A senha do usuário |
+
+```json
+{
+    "username": string, 
+    "email": string,
+    "password": string
+}
+```
 
 #### Executa o login do usuário
 
@@ -101,10 +148,17 @@ Após configurar as varíaveis de ambiente execute a sequencia de comandos
   POST /api/login
 ```
 
-| Parâmetro   | Tipo       | Descrição                                   |
+| Propriedade   | Tipo       | Descrição                                   |
 | :---------- | :--------- | :------------------------------------------ |
 | `username`      | `string` | **Obrigatório**. O nome de usuário |
 | `password`      | `string` | **Obrigatório**. A senha do usuário |
+
+```json
+{
+    "username": string, 
+    "password": string
+}
+```
 
 #### Executa o logout do usuário
 

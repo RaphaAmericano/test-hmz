@@ -1,6 +1,6 @@
 import { NextFunction, Request, Response } from "express";
 import { UserService } from "../services/UserService";
-import { UserFindAllResultDto, UserFindResultDto, UserGetUserQuerysDto, UserId, UserUpdateResultDto } from "../../domain/entities/User";
+import { UserCreateDto, UserCreateResultDto, UserFindAllResultDto, UserFindResultDto, UserGetUserQuerysDto, UserId, UserUpdateResultDto } from "../../domain/entities/User";
 import { PromiseHandle } from "../../shared/utils/PromiseHandle";
 import { HttpResponse } from "../../infrastructure/utils/HttpResponse";
 
@@ -31,6 +31,17 @@ export class UserController {
         }
         const { auth, ...user_data } = data
         HttpResponse.success(res, { ...user_data, ...auth } )
+    }
+
+    async create_user(req: Request<{}, {}, UserCreateDto>, res: Response) {
+        const { data, error } = await PromiseHandle.wrapPromise<UserCreateResultDto>(this.userService.create(req.body))
+        if(error || data === null){
+            HttpResponse.error(res, error?.message || 'Error to create user')
+            return
+        }
+        const { auth, ...user_data } = data
+        const { email } = auth
+        HttpResponse.success(res, { ...user_data, email })
     }
 
     async update_user(req: Request<UserId, {}, {}>, res: Response) {

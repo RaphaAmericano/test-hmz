@@ -35,6 +35,10 @@ const userGetParamSchema = z.object({
 
 type UserInferUser = z.infer<typeof userSchema>;
 
+const userSchemaCreate = userSchema
+  .omit({ id: true, created_at: true, updated_at: true, auth: true })
+  .extend({ email: z.string().email() })
+
 const userSchemaUpdate = userSchema
   .omit({ id: true, created_at: true, updated_at: true, auth: true })
   .partial()
@@ -48,6 +52,14 @@ const userSchemaUpdate = userSchema
 
 
 export class UserZod {
+
+  static validate_user_create(body: any): ValidationResult {
+    const result = userSchemaCreate.safeParse(body);
+    const data = result.data ?? body
+    const error = result.success ? null : ZodUtils.formatErrorString(result.error);
+    return { success: result.success, error: error || null, data  };
+  }
+  
   static validate_user_find_all(query: any): ValidationResult {
     const result = userGetAllQuerySchema.safeParse(query);
     const data = result.data ?? query
