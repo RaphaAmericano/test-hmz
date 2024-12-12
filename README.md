@@ -7,7 +7,7 @@ Projeto de API de crud de usuario, com login e autenticação.
 
 ## Variáveis de Ambiente
 
-Para rodar esse projeto, você vai precisar adicionar as seguintes variáveis de ambiente no seu .env de acordo com o example.env.
+Para rodar esse projeto, após clonar o repositório em sua máquina, você vai precisar adicionar as seguintes variáveis de ambiente no seu .env de acordo com o example.env.
 
 Preencha as variáveis de DATABASE de acordo com as credenciais do seu banco Postgres
 O secret key é sua chave de autenticação. De preferência use uma string aleatória.
