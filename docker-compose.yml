@@ -15,10 +15,14 @@ services:
       PORT: ${PORT}
     ports:
       - "3000:3000"
+    volumes:
+      - .:/app
+      - /app/node_modules
     depends_on:
       test-hmz-db:
         condition: service_healthy
-    command: node dist/index.js
+    command: >
+      sh -c "npx prisma migrate deploy && node dist/index.js"
     networks:
       - test-hmz
     
@@ -34,15 +38,14 @@ services:
       POSTGRES_DB: ${DATABASE_NAME}
     volumes:
       - test-hmz-data:/var/lib/postgresql/data/ #using a volume
-
+      # - ./init.sql:/docker-entrypoint-initdb.d/init.sql
     ports:
       - "5432:5432"
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U postgres"]
-      # test: ["CMD-SHELL", "pg_isready -U ${DATABASE_USERNAME} -d ${DATABASE_NAME}"]
-      # interval: 10s
-      # timeout: 5s
-      # retries: 5
+      test: ["CMD-SHELL", "pg_isready -U ${DATABASE_USERNAME}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
     networks:
       - test-hmz
 

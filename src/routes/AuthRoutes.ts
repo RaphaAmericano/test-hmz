@@ -30,4 +30,5 @@ router.post("/login", requestValidationMiddleware.validate_login.bind(requestVal
 router.post("/logout", jwtMiddleware.authenticate(), authController.logout.bind(authController))
 router.post("/register", requestValidationMiddleware.validate_register.bind(requestValidationMiddleware), authController.register.bind(authController), bearerTokenMiddleware.successWithBearer.bind(bearerTokenMiddleware))
 
+
 export default router

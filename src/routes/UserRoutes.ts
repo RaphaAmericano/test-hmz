@@ -25,10 +25,9 @@ const requestValidationMiddleware = new UserRequestValidationMiddleware({
     validateUserUpdateFunction: UserZod.validate_user_update
 })
 const authMiddleware = new AuthMiddleware('jwt')
-const bearerTokenMiddleware = new BearerTokenMiddleware(TokenManager.generateToken)
 
-router.get("", requestValidationMiddleware.validate_users_find_all.bind(requestValidationMiddleware), authMiddleware.authenticate(),   userController.get_users.bind(userController))
-router.get("/:id",requestValidationMiddleware.validate_users_find_one.bind(requestValidationMiddleware), authMiddleware.authenticate(), userController.get_user_by_id.bind(userController))
+router.get("", requestValidationMiddleware.validate_users_find_all.bind(requestValidationMiddleware), authMiddleware.authenticate(), userController.get_users.bind(userController))
+router.get("/:id", requestValidationMiddleware.validate_users_find_one.bind(requestValidationMiddleware), authMiddleware.authenticate(), userController.get_user_by_id.bind(userController))
 router.put("/:id", requestValidationMiddleware.validate_user_update.bind(requestValidationMiddleware), authMiddleware.authenticate(), userController.update_user.bind(userController))
 router.delete("/:id", requestValidationMiddleware.validate_user_delete.bind(requestValidationMiddleware), authMiddleware.authenticate(), userController.delete_user.bind(userController))
 

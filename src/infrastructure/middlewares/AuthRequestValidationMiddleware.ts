@@ -1,5 +1,4 @@
 import { NextFunction, Request, Response } from "express";
-import { UserGetUserQuerysDto, UserId } from "../../domain/entities/User";
 import { HttpResponse } from "../utils/HttpResponse";
 import { ValidationResult } from "../validation/interfaces/Validation";
 
@@ -30,6 +29,7 @@ export class AuthRequestValidationMiddleware {
         }
         req.body = validate.data ?? body
         next();
+        return 
     }
 
     public validate_login(req: Request, res: Response, next: NextFunction): void {
@@ -42,6 +42,7 @@ export class AuthRequestValidationMiddleware {
         }
         req.params = validate.data ?? body
         next();
+        return 
     }
 
 }

@@ -20,8 +20,8 @@ export class AuthController {
         next: NextFunction): Promise<any> {
         const { body } = req
         const { data, error } = await PromiseHandle.wrapPromise(this.authService.create(body))
-        if(error || data === null){
-            return HttpResponse.error(res, error.message || 'Error to create user')
+        if(error || data === null || data === undefined) {
+            return HttpResponse.error(res, 'Error to create user')
         }
         const { id } = data
         req.user = { id }

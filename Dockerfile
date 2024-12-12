@@ -21,10 +21,7 @@ RUN npm install
 # Copia o restante do código da aplicação para o container
 COPY . .
 
-
 RUN npx prisma generate
-
-# RUN npx prisma migrate dev
 
 RUN npm run build
 
@@ -32,5 +29,5 @@ RUN npm run build
 EXPOSE 3000
 
 # Define o comando para iniciar a aplicação
-CMD ["npx", "prisma", "migrate", "dev", "&&" ]
-# CMD ["npx", "prisma", "migrate", "dev", "&&" ,"node", "dist/index.js"]
+
+CMD ["node", "dist/index.js"]
