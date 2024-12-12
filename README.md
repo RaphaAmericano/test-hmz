@@ -35,6 +35,7 @@ Após configurar as varíaveis de ambiente execute a sequencia de comandos
   npm install
   npx prisma generate
   npx prisma migrate dev 
+  npm run build
   npm run start
 ```
     
